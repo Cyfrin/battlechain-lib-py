@@ -16,7 +16,12 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = ["titanoboa>=0.2.5", "eth-utils>=4.1.1", "eth-abi>=5.0.0"]
+dependencies = [
+    "titanoboa>=0.2.5",
+    "eth-utils>=4.1.1",
+    "eth-abi>=5.0.0",
+    "vyper>=0.4.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/Cyfrin/battlechain-lib-py"
