@@ -1,6 +1,6 @@
 [project]
 name = "battlechain-lib-py"
-version = "0.1.0"
+version = "0.2.0"
 description = "Python library for deploying on BattleChain and adopting Safe Harbor agreements. Mirrors cyfrin/battlechain-lib (Solidity)."
 authors = [
     { name = "PatrickAlphac", email = "54278053+PatrickAlphaC@users.noreply.github.com" },
@@ -16,7 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = ["titanoboa>=0.2.5", "eth-utils>=4.1.1"]
+dependencies = ["titanoboa>=0.2.5", "eth-utils>=4.1.1", "eth-abi>=5.0.0"]
 
 [project.urls]
 Homepage = "https://github.com/Cyfrin/battlechain-lib-py"

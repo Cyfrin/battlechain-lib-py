@@ -47,10 +47,15 @@ from battlechain.config import (
     is_battlechain,
 )
 from battlechain.deploy import (
+    DEFAULT_TRACKING_FILE,
+    bc_deploy,
     bc_deploy_create,
     bc_deploy_create2,
     bc_deploy_create3,
+    build_init_code,
     deployed_contracts,
+    get_tracked_address,
+    get_tracked_contract,
     reset_deployments,
     track_deployment,
 )
@@ -90,7 +95,7 @@ from battlechain.types import (
 )
 from battlechain.verify import verify_contract
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     # version
@@ -136,10 +141,15 @@ __all__ = [
     "default_agreement_details",
     "default_bounty_terms",
     # deploy
+    "DEFAULT_TRACKING_FILE",
+    "bc_deploy",
     "bc_deploy_create",
     "bc_deploy_create2",
     "bc_deploy_create3",
+    "build_init_code",
     "deployed_contracts",
+    "get_tracked_address",
+    "get_tracked_contract",
     "reset_deployments",
     "track_deployment",
     # safe harbor

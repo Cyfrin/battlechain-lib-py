@@ -31,9 +31,10 @@ wheels = [
 
 [[package]]
 name = "battlechain-lib-py"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
+    { name = "eth-abi" },
     { name = "eth-utils" },
     { name = "titanoboa" },
 ]
@@ -46,6 +47,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "eth-abi", specifier = ">=5.0.0" },
     { name = "eth-utils", specifier = ">=4.1.1" },
     { name = "titanoboa", specifier = ">=0.2.5" },
 ]

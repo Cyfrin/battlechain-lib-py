@@ -135,6 +135,35 @@ work the same way.
 Every deploy is tracked — call `deployed_contracts()` to get them all and pass
 straight into `default_agreement_details`.
 
+### `bc_deploy(deployer, *args)` and `build_init_code(deployer, *args)`
+
+Higher-level wrappers for boa-compiled contracts. `build_init_code` takes a
+boa `VyperDeployer` (e.g. the symbol from `from src import MyContract`) plus
+constructor args and returns the assembled init code — handy when paired with
+`bc_deploy_create2` for deterministic addresses:
+
+```python
+salt = keccak(b"my-vault-v1")
+init_code = bc.build_init_code(MyVault, token.address)
+address = bc.bc_deploy_create2(salt, init_code)
+```
+
+`bc_deploy` does the full job in one call: builds init code, deploys via
+`BattleChainDeployer` (CREATE), wraps the result back into a `VyperContract`,
+and persists the address to a per-chain JSON file (`.bc_deployments.json` by
+default):
+
+```python
+vault = bc.bc_deploy(MyVault, token.address)
+vault.deposit(amount)  # use it like any boa contract
+```
+
+Subsequent script runs can resolve the address with `get_tracked_address("MyVault")`
+or fetch a wrapped contract instance with `get_tracked_contract(MyVault)`. The
+JSON file exists because deployer-routed contracts perform their CREATE inside
+`BattleChainDeployer`'s call context, so moccasin's `deployments.db` can't see
+them.
+
 ### `default_agreement_details(...)` and friends
 
 Build `AgreementDetails` with sensible defaults. On BattleChain it sets the
