@@ -14,6 +14,7 @@ Boa-first, designed for [Moccasin](https://github.com/Cyfrin/moccasin) scripts.
   - [Reference](#reference)
     - [`is_attackable(contract_address: str) -> bool`](#is_attackablecontract_address-str---bool)
     - [`bc_deploy_create(init_code: bytes) -> str`](#bc_deploy_createinit_code-bytes---str)
+    - [`bc_deploy(deployer, *args)` and `build_init_code(deployer, *args)`](#bc_deploydeployer-args-and-build_init_codedeployer-args)
     - [`default_agreement_details(...)` and friends](#default_agreement_details-and-friends)
     - [Network overrides](#network-overrides)
   - [Contributing](#contributing)
