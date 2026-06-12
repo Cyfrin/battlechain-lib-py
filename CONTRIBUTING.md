@@ -138,7 +138,7 @@ Solidity lib changes, here's what to update:
 
 | Solidity change              | Python update                                                         |
 | ---------------------------- | --------------------------------------------------------------------- |
-| `BCConfig.sol` addresses     | `battlechain/config.py` constants + `bc_testnet`                      |
+| `BCConfig.sol` addresses     | `battlechain/config.py` constants + `bc_mainnet` / `bc_testnet`       |
 | `AgreementTypes.sol`         | `battlechain/types.py` dataclasses/enums                              |
 | Interface methods            | Run `tools/gen_abi.py` to refresh `battlechain/abi.py`                |
 | `BCSafeHarbor.sol` builders  | `battlechain/builders.py` + corresponding `safe_harbor.py` actions    |

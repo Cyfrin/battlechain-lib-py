@@ -27,13 +27,31 @@ from battlechain.errors import (
 # Constants and config
 # -----------------------------------------------------------------------------
 
+
 def test_canonical_addresses() -> None:
     """Confirm we ship the addresses from BCConfig.sol, not the stale starter set."""
-    assert config.TESTNET_REGISTRY == "0x0a652e265336a0296816aC4D8400880e3E537C24"
-    assert config.TESTNET_AGREEMENT_FACTORY == "0x2Bee2970f10FDc2aeA28662BB6F6A501278Ebd46"
-    assert config.TESTNET_ATTACK_REGISTRY == "0xdD029a6374095EEb4c47a2364Ce1D0f47f007350"
-    assert config.TESTNET_DEPLOYER == "0x74269804941119554460956f16Fe82Fbe4B90448"
+    assert config.TESTNET_REGISTRY == "0x07E09f67B272aec60eebBfB3D592eC649BDCFEFc"
+    assert config.TESTNET_AGREEMENT_FACTORY == "0xf52CEA27b9E20D03Ec48CDe4fafF8F27565646f2"
+    assert config.TESTNET_ATTACK_REGISTRY == "0x22134e878c409a0Eab7259d873b38e26Ca966d3C"
+    assert config.TESTNET_DEPLOYER == "0x0f75289c6b883b885A1fDF9BCCABE1bbFB094077"
+    # Permissionless MockRegistryModerator — anyone can call approveAttack(agreement) on testnet.
+    assert config.TESTNET_MOCK_REGISTRY_MODERATOR == "0x3DdA228A38b4d7438bBF5D5137c8D1090DcaF6bF"
     assert config.WELL_KNOWN_CREATEX == "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+
+
+def test_mainnet_canonical_addresses() -> None:
+    """Confirm we ship the mainnet addresses from BCConfig.sol."""
+    cfg = config.get_network_config(626)
+    assert cfg is config.bc_mainnet
+    assert cfg.caip2 == "eip155:626"
+    assert config.registry_address(626) == "0xd229f4EE1bAE432010b72a9d1bD682570F4C6eBe"
+    assert config.agreement_factory_address(626) == "0xCdB7F5C0F708baBaabE82afE1DbA8362023AcFdd"
+    assert config.attack_registry_address(626) == "0x24876e481eC7198CAC95af739Df2a852CE65A415"
+    assert config.deployer_address(626) == "0xD12765D21dDba418B8Fc0583c4716763e03Aa078"
+    # Mainnet CreateX is a BattleChain deployment, NOT the well-known 0xba5Ed0… address.
+    assert config.create_x_address(626) == "0xa397f06F07251A3AEd53f6d3019A2a6cbd83E53e"
+    assert config.create_x_address(626) != config.WELL_KNOWN_CREATEX
+    assert config.MAINNET_RPC_URL == "https://mainnet.battlechain.com"
 
 
 def test_safe_harbor_uris() -> None:
@@ -70,7 +88,7 @@ def test_unsupported_chain_raises() -> None:
 
 def test_explorer_urls() -> None:
     assert config.explorer_host(627) == "https://block-explorer-api.testnet.battlechain.com"
-    assert config.explorer_host(626) == "https://block-explorer-api.battlechain.com"
+    assert config.explorer_host(626) == "https://block-explorer-api.mainnet.battlechain.com"
     assert config.explorer_api(627).endswith("/api")
     with pytest.raises(UnsupportedChainForQueryError):
         config.explorer_host(1)
@@ -98,19 +116,21 @@ def test_overrides_round_trip() -> None:
 # CreateX registry
 # -----------------------------------------------------------------------------
 
+
 def test_createx_supported_chains() -> None:
     from battlechain import createx_chains
 
-    assert createx_chains.is_supported(1)        # Ethereum
-    assert createx_chains.is_supported(8453)     # Base
-    assert createx_chains.is_supported(11155111) # Sepolia
-    assert createx_chains.is_supported(31337)    # Anvil
+    assert createx_chains.is_supported(1)  # Ethereum
+    assert createx_chains.is_supported(8453)  # Base
+    assert createx_chains.is_supported(11155111)  # Sepolia
+    assert createx_chains.is_supported(31337)  # Anvil
     assert not createx_chains.is_supported(999_999_998)
 
 
 # -----------------------------------------------------------------------------
 # Types and tuple serialization
 # -----------------------------------------------------------------------------
+
 
 def test_bounty_terms_to_tuple() -> None:
     bt = bc.default_bounty_terms()
@@ -143,7 +163,7 @@ def test_agreement_details_round_trip() -> None:
     contract_addr_serialized = serialized[2][0][1][0][0]
     assert recovery_addr_serialized == recovery_input.lower()
     assert contract_addr_serialized == contract_input.lower()
-    assert serialized[2][0][1][0][1] == 2                 # ChildContractScope.ALL
+    assert serialized[2][0][1][0][1] == 2  # ChildContractScope.ALL
     assert serialized[3] == (10, 1_000_000, True, 0, "", 0)
     assert serialized[4] == "ipfs://test"
 
@@ -165,15 +185,21 @@ def test_default_agreement_details_routes_uri_by_chain() -> None:
 def test_agreement_state_enum() -> None:
     assert int(bc.AgreementState.UNDER_ATTACK) == 3
     assert int(bc.AgreementState.PROMOTION_REQUESTED) == 4
-    assert frozenset({
-        bc.AgreementState.UNDER_ATTACK,
-        bc.AgreementState.PROMOTION_REQUESTED,
-    }) == bc.ATTACKABLE_STATES
+    assert (
+        frozenset(
+            {
+                bc.AgreementState.UNDER_ATTACK,
+                bc.AgreementState.PROMOTION_REQUESTED,
+            }
+        )
+        == bc.ATTACKABLE_STATES
+    )
 
 
 # -----------------------------------------------------------------------------
 # ABI shape
 # -----------------------------------------------------------------------------
+
 
 def test_abi_module_shape() -> None:
     from battlechain import abi as abi_module
@@ -241,9 +267,9 @@ def stub_explorer(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.mark.parametrize(
     ("address", "expected"),
     [
-        ("0x0000000000000000000000000000000000000aaa", True),   # UNDER_ATTACK
+        ("0x0000000000000000000000000000000000000aaa", True),  # UNDER_ATTACK
         ("0x0000000000000000000000000000000000000bbb", False),  # PRODUCTION
-        ("0x0000000000000000000000000000000000000ccc", True),   # PROMOTION_REQUESTED
+        ("0x0000000000000000000000000000000000000ccc", True),  # PROMOTION_REQUESTED
         ("0x0000000000000000000000000000000000000eee", False),  # no coverage
     ],
 )
@@ -265,5 +291,8 @@ def test_query_agreement_by_contract_url_format() -> None:
     url = query._agreement_by_contract_url(  # noqa: SLF001
         config.TESTNET_EXPLORER_HOST, "0xabc"
     )
-    assert url == "https://block-explorer-api.testnet.battlechain.com/battlechain/agreement/by-contract/0xabc"
+    assert (
+        url
+        == "https://block-explorer-api.testnet.battlechain.com/battlechain/agreement/by-contract/0xabc"
+    )
     assert "/api" not in url

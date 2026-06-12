@@ -27,10 +27,16 @@ from battlechain.builders import (
 )
 from battlechain.config import (
     BATTLECHAIN_SAFE_HARBOR_URI,
+    MAINNET_AGREEMENT_FACTORY,
+    MAINNET_ATTACK_REGISTRY,
     MAINNET_CAIP2,
     MAINNET_CHAIN_ID,
+    MAINNET_CREATEX,
+    MAINNET_DEPLOYER,
     MAINNET_EXPLORER_API,
     MAINNET_EXPLORER_HOST,
+    MAINNET_REGISTRY,
+    MAINNET_RPC_URL,
     SAFE_HARBOR_V3_URI,
     TESTNET_AGREEMENT_FACTORY,
     TESTNET_ATTACK_REGISTRY,
@@ -43,6 +49,7 @@ from battlechain.config import (
     TESTNET_RPC_URL,
     WELL_KNOWN_CREATEX,
     BcNetworkConfig,
+    bc_mainnet,
     bc_testnet,
     is_battlechain,
 )
@@ -95,7 +102,7 @@ from battlechain.types import (
 )
 from battlechain.verify import verify_contract
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     # version
@@ -113,10 +120,16 @@ __all__ = [
     "IdentityRequirements",
     # config
     "BATTLECHAIN_SAFE_HARBOR_URI",
+    "MAINNET_AGREEMENT_FACTORY",
+    "MAINNET_ATTACK_REGISTRY",
     "MAINNET_CAIP2",
     "MAINNET_CHAIN_ID",
+    "MAINNET_CREATEX",
+    "MAINNET_DEPLOYER",
     "MAINNET_EXPLORER_API",
     "MAINNET_EXPLORER_HOST",
+    "MAINNET_REGISTRY",
+    "MAINNET_RPC_URL",
     "SAFE_HARBOR_V3_URI",
     "TESTNET_AGREEMENT_FACTORY",
     "TESTNET_ATTACK_REGISTRY",
@@ -128,6 +141,7 @@ __all__ = [
     "TESTNET_REGISTRY",
     "TESTNET_RPC_URL",
     "WELL_KNOWN_CREATEX",
+    "bc_mainnet",
     "bc_testnet",
     "is_battlechain",
     # builders

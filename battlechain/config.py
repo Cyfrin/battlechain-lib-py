@@ -41,18 +41,23 @@ WELL_KNOWN_CREATEX = "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
 # -----------------------------------------------------------------------------
 
 SAFE_HARBOR_V3_URI = "ipfs://bafkreiernns2f4nv2uzvwtzjc2jboyivsu2mixz33y3xo7cvtllsuao6jy"
-BATTLECHAIN_SAFE_HARBOR_URI = "ipfs://bafkreifgln3ir67woluatpwn3b65gjkrbmoq6jgzzotm3anas3vvq4yp4m"
+BATTLECHAIN_SAFE_HARBOR_URI = "ipfs://bafkreibrplcrle2zxiezhm2metajrrdqyvwglhakddrdt27elmrezp5bge"
+
+# -----------------------------------------------------------------------------
+# RPC URLs
+# -----------------------------------------------------------------------------
+
+MAINNET_RPC_URL = "https://mainnet.battlechain.com"
+TESTNET_RPC_URL = "https://testnet.battlechain.com"
 
 # -----------------------------------------------------------------------------
 # Block explorer
 # -----------------------------------------------------------------------------
 
-TESTNET_RPC_URL = "https://testnet.battlechain.com"
-
 # Bare host: used by the BattleChain-specific routes (e.g.,
 # `/battlechain/agreement/by-contract/<addr>`) consumed by the BCQuery helpers.
 TESTNET_EXPLORER_HOST = "https://block-explorer-api.testnet.battlechain.com"
-MAINNET_EXPLORER_HOST = "https://block-explorer-api.battlechain.com"
+MAINNET_EXPLORER_HOST = "https://block-explorer-api.mainnet.battlechain.com"
 
 # Etherscan-compatible API: used by `verify.verify_contract` to submit source.
 TESTNET_EXPLORER_API = f"{TESTNET_EXPLORER_HOST}/api"
@@ -74,18 +79,43 @@ class BcNetworkConfig:
 
 
 # -----------------------------------------------------------------------------
+# Mainnet (626) addresses — canonical, from BCConfig.sol
+# -----------------------------------------------------------------------------
+
+MAINNET_REGISTRY = "0xd229f4EE1bAE432010b72a9d1bD682570F4C6eBe"
+MAINNET_AGREEMENT_FACTORY = "0xCdB7F5C0F708baBaabE82afE1DbA8362023AcFdd"
+MAINNET_ATTACK_REGISTRY = "0x24876e481eC7198CAC95af739Df2a852CE65A415"
+MAINNET_DEPLOYER = "0xD12765D21dDba418B8Fc0583c4716763e03Aa078"
+MAINNET_CREATEX = "0xa397f06F07251A3AEd53f6d3019A2a6cbd83E53e"
+MAINNET_REGISTRY_IMPL = "0xBFF0ec94740c287932B50E64c2e8b380129B99a1"
+MAINNET_AGREEMENT_FACTORY_IMPL = "0x8d4fEDF4462E3876Ae7C70CC0C5cebA482003Ad5"
+MAINNET_ATTACK_REGISTRY_IMPL = "0x03A3228A4ce38362289E715bbc26Cac8b98e421B"
+MAINNET_REGISTRY_MODERATOR = "0x445d5685c4Ae71550Da0716b82B434AEA140E0c7"
+
+bc_mainnet = BcNetworkConfig(
+    chain_id=MAINNET_CHAIN_ID,
+    caip2=MAINNET_CAIP2,
+    registry=MAINNET_REGISTRY,
+    factory=MAINNET_AGREEMENT_FACTORY,
+    attack_registry=MAINNET_ATTACK_REGISTRY,
+    deployer=MAINNET_DEPLOYER,
+    create_x=MAINNET_CREATEX,
+    safe_harbor_uri=BATTLECHAIN_SAFE_HARBOR_URI,
+)
+
+# -----------------------------------------------------------------------------
 # Testnet (627) addresses — canonical, from BCConfig.sol
 # -----------------------------------------------------------------------------
 
-TESTNET_REGISTRY = "0x0a652e265336a0296816aC4D8400880e3E537C24"
-TESTNET_AGREEMENT_FACTORY = "0x2Bee2970f10FDc2aeA28662BB6F6A501278Ebd46"
-TESTNET_ATTACK_REGISTRY = "0xdD029a6374095EEb4c47a2364Ce1D0f47f007350"
-TESTNET_DEPLOYER = "0x74269804941119554460956f16Fe82Fbe4B90448"
+TESTNET_REGISTRY = "0x07E09f67B272aec60eebBfB3D592eC649BDCFEFc"
+TESTNET_AGREEMENT_FACTORY = "0xf52CEA27b9E20D03Ec48CDe4fafF8F27565646f2"
+TESTNET_ATTACK_REGISTRY = "0x22134e878c409a0Eab7259d873b38e26Ca966d3C"
+TESTNET_DEPLOYER = "0x0f75289c6b883b885A1fDF9BCCABE1bbFB094077"
 TESTNET_CREATEX = "0xf1Ebfaa992854ECcB01Ac1F60e5b5279095cca7F"
-TESTNET_REGISTRY_IMPL = "0xCd8B924D0F43C26E99dDE7a2C7A47d9fAf0c10bB"
-TESTNET_AGREEMENT_FACTORY_IMPL = "0x7D14c46539f673152857Ea647E66E5AD5f820043"
-TESTNET_ATTACK_REGISTRY_IMPL = "0x34328AeBd4e3b173B71144AB29F4509E6816277c"
-TESTNET_MOCK_REGISTRY_MODERATOR = "0x1bC64E6F187a47D136106784f4E9182801535BD3"
+TESTNET_REGISTRY_IMPL = "0x7d6fC65eA6436f1621973BcfeaAD8951853D8E35"
+TESTNET_AGREEMENT_FACTORY_IMPL = "0x8E940c4FE62ea1696751faA99F45F30459c6c978"
+TESTNET_ATTACK_REGISTRY_IMPL = "0x4496b7e04b4Dd94153AA0d614708d5f06fc65a13"
+TESTNET_MOCK_REGISTRY_MODERATOR = "0x3DdA228A38b4d7438bBF5D5137c8D1090DcaF6bF"
 
 bc_testnet = BcNetworkConfig(
     chain_id=TESTNET_CHAIN_ID,
@@ -98,8 +128,8 @@ bc_testnet = BcNetworkConfig(
     safe_harbor_uri=BATTLECHAIN_SAFE_HARBOR_URI,
 )
 
-# Mainnet (626) addresses are TBD per the official docs.
 _KNOWN_NETWORKS: dict[int, BcNetworkConfig] = {
+    MAINNET_CHAIN_ID: bc_mainnet,
     TESTNET_CHAIN_ID: bc_testnet,
 }
 
@@ -108,6 +138,7 @@ _KNOWN_NETWORKS: dict[int, BcNetworkConfig] = {
 # Override registry for local Anvil / unsupported chains
 # (mirrors `BCBase._setBcAddresses(...)`)
 # -----------------------------------------------------------------------------
+
 
 @dataclass
 class _OverrideState:
@@ -167,6 +198,7 @@ def clear_overrides(chain_id: int | None = None) -> None:
 # -----------------------------------------------------------------------------
 # Resolution
 # -----------------------------------------------------------------------------
+
 
 def get_network_config(chain_id: int) -> BcNetworkConfig:
     """Resolve the network config for a chain ID.
@@ -240,6 +272,8 @@ def create_x_address(chain_id: int) -> str:
     """
     if chain_id in _state.overrides:
         return _state.overrides[chain_id].create_x
+    if chain_id == MAINNET_CHAIN_ID:
+        return MAINNET_CREATEX
     if chain_id == TESTNET_CHAIN_ID:
         return TESTNET_CREATEX
     if createx_chains.is_supported(chain_id):
@@ -284,10 +318,20 @@ def explorer_api(chain_id: int) -> str:
 __all__ = [
     "BATTLECHAIN_SAFE_HARBOR_URI",
     "BcNetworkConfig",
+    "MAINNET_AGREEMENT_FACTORY",
+    "MAINNET_AGREEMENT_FACTORY_IMPL",
+    "MAINNET_ATTACK_REGISTRY",
+    "MAINNET_ATTACK_REGISTRY_IMPL",
     "MAINNET_CAIP2",
     "MAINNET_CHAIN_ID",
+    "MAINNET_CREATEX",
+    "MAINNET_DEPLOYER",
     "MAINNET_EXPLORER_API",
     "MAINNET_EXPLORER_HOST",
+    "MAINNET_REGISTRY",
+    "MAINNET_REGISTRY_IMPL",
+    "MAINNET_REGISTRY_MODERATOR",
+    "MAINNET_RPC_URL",
     "SAFE_HARBOR_V3_URI",
     "TESTNET_AGREEMENT_FACTORY",
     "TESTNET_AGREEMENT_FACTORY_IMPL",
@@ -306,6 +350,7 @@ __all__ = [
     "WELL_KNOWN_CREATEX",
     "agreement_factory_address",
     "attack_registry_address",
+    "bc_mainnet",
     "bc_testnet",
     "caip2_chain_id",
     "clear_overrides",

@@ -11,6 +11,7 @@ Boa-first, designed for [Moccasin](https://github.com/Cyfrin/moccasin) scripts.
   - [Quick start](#quick-start)
   - [What's included](#whats-included)
   - [Supported networks](#supported-networks)
+    - [Mainnet (626) addresses](#mainnet-626-addresses)
   - [Reference](#reference)
     - [`is_attackable(contract_address: str) -> bool`](#is_attackablecontract_address-str---bool)
     - [`bc_deploy_create(init_code: bytes) -> str`](#bc_deploy_createinit_code-bytes---str)
@@ -89,10 +90,34 @@ Run with `mox run script/deploy.py --network battlechain`.
 
 ## Supported networks
 
-| Network | Chain ID | Status                  |
-| ------- | -------- | ----------------------- |
-| Mainnet | 626      | TBD (addresses pending) |
-| Testnet | 627      | Available               |
+| Network | Chain ID | RPC                              | Status    |
+| ------- | -------- | -------------------------------- | --------- |
+| Mainnet | 626      | `https://mainnet.battlechain.com` | Available |
+| Testnet | 627      | `https://testnet.battlechain.com` | Available |
+
+Both networks have a block explorer, so the explorer-backed helpers
+(`is_attackable`, `verify_contract`) work on mainnet and testnet:
+
+- Mainnet: <https://explorer.mainnet.battlechain.com/>
+- Testnet: <https://explorer.testnet.battlechain.com/>
+
+### Mainnet (626) addresses
+
+| Contract                        | Address                                      |
+| ------------------------------- | -------------------------------------------- |
+| Safe Harbor Registry (proxy)    | `0xd229f4EE1bAE432010b72a9d1bD682570F4C6eBe` |
+| Registry Implementation         | `0xBFF0ec94740c287932B50E64c2e8b380129B99a1` |
+| Agreement Factory (proxy)       | `0xCdB7F5C0F708baBaabE82afE1DbA8362023AcFdd` |
+| AgreementFactory Implementation | `0x8d4fEDF4462E3876Ae7C70CC0C5cebA482003Ad5` |
+| Attack Registry (proxy)         | `0x24876e481eC7198CAC95af739Df2a852CE65A415` |
+| AttackRegistry Implementation   | `0x03A3228A4ce38362289E715bbc26Cac8b98e421B` |
+| BattleChainDeployer             | `0xD12765D21dDba418B8Fc0583c4716763e03Aa078` |
+| CreateX                         | `0xa397f06F07251A3AEd53f6d3019A2a6cbd83E53e` |
+| Registry Moderator              | `0x445d5685c4Ae71550Da0716b82B434AEA140E0c7` |
+
+Note: on BattleChain mainnet, CreateX is **not** at the well-known
+`0xba5Ed0…` address — `create_x_address(626)` resolves the BattleChain
+deployment above.
 
 For local Anvil or unsupported chains, register addresses with `config.set_overrides`:
 

@@ -35,8 +35,7 @@ class NotBattleChainError(BattleChainError):
 
     def __init__(self, chain_id: int) -> None:
         super().__init__(
-            f"Operation requires BattleChain (mainnet 626 / testnet 627 / devnet 624); "
-            f"got chain ID {chain_id}"
+            f"Operation requires BattleChain (mainnet 626 / testnet 627); got chain ID {chain_id}"
         )
         self.chain_id = chain_id
 

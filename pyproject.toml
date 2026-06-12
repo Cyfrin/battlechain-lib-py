@@ -1,6 +1,6 @@
 [project]
 name = "battlechain-lib-py"
-version = "0.2.0"
+version = "0.3.0"
 description = "Python library for deploying on BattleChain and adopting Safe Harbor agreements. Mirrors cyfrin/battlechain-lib (Solidity)."
 authors = [
     { name = "PatrickAlphac", email = "54278053+PatrickAlphaC@users.noreply.github.com" },
